@@ -25,6 +25,7 @@ namespace Othello
         public MainPage()
         {
             this.InitializeComponent();
+            //test
         }
     }
 }
