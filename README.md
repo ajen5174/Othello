@@ -1,0 +1,2 @@
+# Othello
+Group othello project
