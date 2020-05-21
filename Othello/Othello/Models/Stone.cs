@@ -19,7 +19,6 @@ namespace Othello.Models
 			color = !color;
 
 			// other logic here
-
 		}
 	}
 }
