@@ -20,9 +20,7 @@ namespace Othello.Models
 
         public int ValidSpaceCount()
         {
-            // logic
-
-            return 0;
+            return ValidSpaces().Length;
         }
     }
 }
