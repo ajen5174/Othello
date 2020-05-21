@@ -9,6 +9,24 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <!--eric-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.25*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.25*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Command Bar -->
+        <CommandBar DefaultLabelPosition="Right" Grid.Row="0" Grid.ColumnSpan="4">
+            <AppBarButton x:Name="NewGameBtn" Icon="Add" Label="New Game" Click="NewGameBtn_Click"/>
+        </CommandBar>        
+        
+        <!-- Play Board -->
+        <Grid x:Name="PlayBoard" Grid.Row="1" Grid.Column="1"/>
+        
     </Grid>
 </Page>
