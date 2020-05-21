@@ -1,6 +1,8 @@
 ﻿
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting.AppContainer;
+using Othello;
 
 namespace OthelloTesting
 {
@@ -17,6 +19,17 @@ namespace OthelloTesting
         public void NotEquals()
         {
             Assert.AreNotEqual(11, 10);
+        }
+    }
+
+    [TestClass]
+    public class BoardTest
+    {
+        [UITestMethod]
+        public void ReturnGrid()
+        {
+            MainPage mp = new MainPage();
+            Assert.IsTrue(mp.CreateBoard());
         }
     }
 }

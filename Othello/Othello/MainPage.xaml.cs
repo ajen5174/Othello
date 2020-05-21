@@ -23,7 +23,7 @@ namespace Othello
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public partial class MainPage : Page
     {
         public MainPage()
         {
@@ -41,7 +41,7 @@ namespace Othello
             //User clicked on a space
         }
 
-        private void CreateBoard()
+        public bool CreateBoard()
         {
             PlayBoard.RowDefinitions.Clear();
             PlayBoard.ColumnDefinitions.Clear();
@@ -77,6 +77,8 @@ namespace Othello
                     PlayBoard.Children.Add(rect);
                 }
             }
+
+            return true;
         }
     }
 }
