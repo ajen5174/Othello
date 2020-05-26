@@ -49,6 +49,7 @@ namespace Othello
         {
             //User clicked on the new game button
             CreateBoard();
+            UpdateBoard();
         }
 
         private void Space_Click(object sender, RoutedEventArgs e)
@@ -58,6 +59,39 @@ namespace Othello
             int column = Grid.GetColumn(r);
             int row = Grid.GetRow(r);
             Debug.WriteLine(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[column, row], column, row, true));
+        }
+
+        public void UpdateBoard()
+        {
+            for (int i = 0; i < stonesBoard.Spaces.GetLength(0); i++)
+            {
+                for (int j = 0; j < stonesBoard.Spaces.GetLength(1); j++)
+                {
+                    if (stonesBoard.Spaces[i, j].IsActive)
+                    {
+                        bool color = stonesBoard.Spaces[i, j].Color;
+
+                        if (color == true)
+                            GetSpace(PlayBoard, i, j).Fill = new SolidColorBrush(Colors.White);
+                        if (color == false)
+                            GetSpace(PlayBoard, i, j).Fill = new SolidColorBrush(Colors.Black);
+
+                    }
+                }
+            }
+        }
+
+        Rectangle GetSpace(Grid g, int c, int r) //Helper method to access a grid's children using columns and rows
+        {
+            for (int i = 0; i < g.Children.Count; i++)
+            {
+                Rectangle b = (Rectangle)g.Children[i];
+                if (Grid.GetRow(b) == r && Grid.GetColumn(b) == c)
+                {
+                    return b;
+                }
+            }
+            return null;
         }
 
         public bool CreateBoard()
