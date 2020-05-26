@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Othello.Models;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,9 +27,22 @@ namespace Othello
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        Board stonesBoard;
+        Stone[] validSpaces;
         public MainPage()
         {
             this.InitializeComponent();
+            stonesBoard = new Board();
+            stonesBoard.Spaces[3, 3].IsActive = true;
+
+            stonesBoard.Spaces[4, 3].IsActive = true;
+            stonesBoard.Spaces[4, 3].Flip();
+
+            stonesBoard.Spaces[3, 4].IsActive = true;
+            stonesBoard.Spaces[3, 4].Flip();
+
+            stonesBoard.Spaces[4, 4].IsActive = true;
+            //validSpaces = stonesBoard.ValidSpaces(true);
         }
 
         private void NewGameBtn_Click(object sender, RoutedEventArgs e)
@@ -39,6 +54,10 @@ namespace Othello
         private void Space_Click(object sender, RoutedEventArgs e)
         {
             //User clicked on a space
+            Rectangle r = e.OriginalSource as Rectangle;
+            int column = Grid.GetColumn(r);
+            int row = Grid.GetRow(r);
+            Debug.WriteLine(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[column, row], column, row, true));
         }
 
         private void CreateBoard()

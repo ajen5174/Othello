@@ -11,6 +11,19 @@ namespace Othello.Models
     {
         public Stone[,] Spaces { get; set; }
 
+        public Board()
+        {
+            Spaces = new Stone[8, 8];   
+            for(int i = 0; i < Spaces.GetLength(0); i++)
+            {
+                for(int j = 0; j < Spaces.GetLength(1); j++)
+                {
+                    Spaces[i, j] = new Stone();
+                }
+            }
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -20,20 +33,27 @@ namespace Othello.Models
         /// <param name="dirX">represents the x-direction to test</param>
         /// <param name="dirY">represents the y-direction to test</param>
         /// <returns></returns>
-        private bool CheckNeighborInDirection(Stone s, int x, int y, int dirX, int dirY)
+        private bool CheckNeighborInDirection(Stone s, int x, int y, int dirX, int dirY, bool colorToPlace) //either this needs to be passed the color we are trying to place, or we check if the space is valid at all
         {
             Stone neighbor;// = Spaces[dirX, dirY];
-            int testX = x + dirX;
-            int testY = y + dirY;
+            Stone initialNeighbor;
+            int testX = x + dirY;
+            int testY = y + dirX;
             //start with left neighbor
             bool hasPassedOppositeColor = false;
-
+            initialNeighbor = Spaces[testX, testY];
 
             //need to change this, right now it compares the color of the blank space, which is incorrect
             //also need to add a check for swapping after hitting the edge of the board.
             while (testX >= 0 && testX < Spaces.GetLength(0) && testY >= 0 && testY < Spaces.GetLength(1))
             {
+                testX += dirY;//
+                testY += dirX;//
                 neighbor = Spaces[testX, testY];
+                if(initialNeighbor.IsActive && neighbor.IsActive && initialNeighbor.Color != neighbor.Color)//this probably needs to be changed to check against color to place
+                {
+                    hasPassedOppositeColor = true;
+                }
                 if (!neighbor.IsActive)//if our neighbor is not active, then we have hit a blank space
                 {
                     if (hasPassedOppositeColor)//if we have passed the opposite color, then we know this is a valid space
@@ -45,9 +65,9 @@ namespace Othello.Models
                         break;
                     }
                 }
-                else //if our neighbor is not active
+                else //if our neighbor is active
                 {
-                    if (neighbor.Color == s.Color)//if our neighbor matches our color we need to know if we've passed the opposite color yet
+                    if (neighbor.Color == colorToPlace)//if our neighbor matches our color we need to know if we've passed the opposite color yet
                     {
                         if (hasPassedOppositeColor)//if we have, then this is a valid space
                         {
@@ -59,23 +79,37 @@ namespace Othello.Models
                         }
                     }
                 }
-                testX += dirX;//
-                testY += dirY;//
+                
             }
 
+            return false;
 
-            throw new NotImplementedException();
+
         }
 
-        private bool CheckNeighbors(Stone s, int x, int y)
+        public bool CheckStoneIsValid(Stone s, int x, int y, bool color)
         {
-            
+            //the idea behind this method is to take the initial space to be tested and call CheckNeighborsInDirection 8 times from that point
 
-            throw new NotImplementedException();
+            return
+            CheckNeighborInDirection(s, x, y, 1, 0, color) || //right
+            CheckNeighborInDirection(s, x, y, 1, 1, color) || //top right
+            CheckNeighborInDirection(s, x, y, 1, -1, color) || //bottom right
+
+            CheckNeighborInDirection(s, x, y, 0, 1, color) || //up
+            CheckNeighborInDirection(s, x, y, 0, -1, color) || //down
+
+            CheckNeighborInDirection(s, x, y, -1, 0, color) || //left
+            CheckNeighborInDirection(s, x, y, -1, 1, color) || //top left
+            CheckNeighborInDirection(s, x, y, -1, -1, color);//bottom left
+
+
+
         }
 
-        public Stone[] ValidSpaces()
+        public Stone[] ValidSpaces(bool color)
         {
+            //this probably needs to be passed the color we want to check for valid spaces, then we can just run the method twice when we want to check for conditions that work
             // logic
             List<Stone> list = new List<Stone>();
             for(int i = 0; i < Spaces.GetLength(0); i++)
@@ -86,7 +120,7 @@ namespace Othello.Models
                     if (!s.IsActive)//test for if it's active or not
                     {
                         //if any of the neighbors are the opposite color, then we can place there
-                        if(CheckNeighbors(s, i, j))
+                        if(CheckStoneIsValid(s, i, j, color))
                         {
                             list.Add(s);
                         }
@@ -100,7 +134,7 @@ namespace Othello.Models
 
         public int ValidSpaceCount()
         {
-            return ValidSpaces().Length;
+            return ValidSpaces(true).Length + ValidSpaces(false).Length;//gonna be wrong
         }
     }
 }

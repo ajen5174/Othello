@@ -9,7 +9,7 @@ namespace Othello.Models
     class Stone
     {
 		public bool IsActive { get; set; }
-		private bool color;
+		private bool color = false;//false = black
 		public bool Color
 		{
 			get { return color; }
