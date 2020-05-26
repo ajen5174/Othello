@@ -10,6 +10,9 @@ namespace Othello.Models
     {
 		public bool IsActive { get; set; }
 		private bool color = false;//false = black
+		public int x;
+		public int y;
+
 		public bool Color
 		{
 			get { return color; }

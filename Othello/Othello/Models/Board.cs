@@ -19,6 +19,8 @@ namespace Othello.Models
                 for(int j = 0; j < Spaces.GetLength(1); j++)
                 {
                     Spaces[i, j] = new Stone();
+                    Spaces[i, j].x = i;
+                    Spaces[i, j].y = j;
                 }
             }
         }
@@ -33,56 +35,66 @@ namespace Othello.Models
         /// <param name="dirX">represents the x-direction to test</param>
         /// <param name="dirY">represents the y-direction to test</param>
         /// <returns></returns>
-        private bool CheckNeighborInDirection(Stone s, int x, int y, int dirX, int dirY, bool colorToPlace) //either this needs to be passed the color we are trying to place, or we check if the space is valid at all
+        private bool CheckNeighborInDirection(Stone s, int x, int y, int dirX, int dirY, bool colorToPlace) 
         {
             Stone neighbor;// = Spaces[dirX, dirY];
             Stone initialNeighbor;
-            int testX = x + dirY;
-            int testY = y + dirX;
+            int testX = x + dirX;
+            int testY = y + dirY;
+            if (testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge before looping, then we know this direction won't make the space valid
+            {
+                return false;
+            }
             //start with left neighbor
             bool hasPassedOppositeColor = false;
             initialNeighbor = Spaces[testX, testY];
+            if(!initialNeighbor.IsActive)// if the first neighbor isn't active then we get out
+            {
+                return false;
+            }
 
-            //need to change this, right now it compares the color of the blank space, which is incorrect
+            if(initialNeighbor.Color == colorToPlace)//if our first neighbor matches the color we want, we get out
+            {
+                return false;
+            }
             //also need to add a check for swapping after hitting the edge of the board.
             while (testX >= 0 && testX < Spaces.GetLength(0) && testY >= 0 && testY < Spaces.GetLength(1))
             {
-                testX += dirY;//
-                testY += dirX;//
+                
                 neighbor = Spaces[testX, testY];
-                if(initialNeighbor.IsActive && neighbor.IsActive && initialNeighbor.Color != neighbor.Color)//this probably needs to be changed to check against color to place
+                testX += dirX;//
+                testY += dirY;//
+                if(neighbor.IsActive)
                 {
-                    hasPassedOppositeColor = true;
-                }
-                if (!neighbor.IsActive)//if our neighbor is not active, then we have hit a blank space
-                {
-                    if (hasPassedOppositeColor)//if we have passed the opposite color, then we know this is a valid space
+                    if (testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge, we check to see if the color has stayed the same
                     {
-                        return true;
-                    }
-                    else //if we haven't passed the opposite color, we know that this neighbor doesn't make our space valid, so we skip to the next
-                    {
-                        break;
-                    }
-                }
-                else //if our neighbor is active
-                {
-                    if (neighbor.Color == colorToPlace)//if our neighbor matches our color we need to know if we've passed the opposite color yet
-                    {
-                        if (hasPassedOppositeColor)//if we have, then this is a valid space
+                        if (neighbor.Color != colorToPlace)//if the color is still opposite, then this is valid
                         {
-                            return true;
+                            hasPassedOppositeColor = true;
+                            break;
                         }
-                        else//if we haven't, then we know this isn't a valid space and we move to the next neighbor
+                    }
+                    else
+                    {
+                        //if our neighbor is active, neighbor's color matches the color we want to place, AND neighbor's color is opposite to the first space we checked then this is valid
+                        if ((initialNeighbor.Color != neighbor.Color && neighbor.Color == colorToPlace))
                         {
+                            hasPassedOppositeColor = true;
                             break;
                         }
                     }
                 }
+                else//if our neighbor is not active, we are done
+                {
+                    break;
+                }
+                
+
+                
                 
             }
 
-            return false;
+            return hasPassedOppositeColor;
 
 
         }
@@ -93,15 +105,15 @@ namespace Othello.Models
 
             return
             CheckNeighborInDirection(s, x, y, 1, 0, color) || //right
-            CheckNeighborInDirection(s, x, y, 1, 1, color) || //top right
-            CheckNeighborInDirection(s, x, y, 1, -1, color) || //bottom right
+            CheckNeighborInDirection(s, x, y, 1, 1, color) || //bottom right
+            CheckNeighborInDirection(s, x, y, 1, -1, color) || //top right
 
             CheckNeighborInDirection(s, x, y, 0, 1, color) || //up
             CheckNeighborInDirection(s, x, y, 0, -1, color) || //down
 
             CheckNeighborInDirection(s, x, y, -1, 0, color) || //left
-            CheckNeighborInDirection(s, x, y, -1, 1, color) || //top left
-            CheckNeighborInDirection(s, x, y, -1, -1, color);//bottom left
+            CheckNeighborInDirection(s, x, y, -1, 1, color) || //bottom left
+            CheckNeighborInDirection(s, x, y, -1, -1, color);//top left
 
 
 

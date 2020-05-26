@@ -32,6 +32,12 @@ namespace Othello
         public MainPage()
         {
             this.InitializeComponent();
+            
+        }
+
+        private void NewGameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //User clicked on the new game button
             stonesBoard = new Board();
             stonesBoard.Spaces[3, 3].IsActive = true;
 
@@ -42,12 +48,8 @@ namespace Othello
             stonesBoard.Spaces[3, 4].Flip();
 
             stonesBoard.Spaces[4, 4].IsActive = true;
-            //validSpaces = stonesBoard.ValidSpaces(true);
-        }
+            validSpaces = stonesBoard.ValidSpaces(true);
 
-        private void NewGameBtn_Click(object sender, RoutedEventArgs e)
-        {
-            //User clicked on the new game button
             CreateBoard();
             UpdateBoard();
         }
