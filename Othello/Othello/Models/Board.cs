@@ -67,8 +67,6 @@ namespace Othello.Models
             {
                 
                 neighbor = Spaces[testX, testY];
-                testX += dirX;//
-                testY += dirY;//
                 if(neighbor.IsActive)
                 {
                     if (!IsInBoundaries(testX, testY, Spaces.GetLength(0), Spaces.GetLength(1)))// testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge, we check to see if the color has stayed the same
@@ -94,9 +92,8 @@ namespace Othello.Models
                     break;
                 }
                 
-
-                
-                
+                testX += dirX;//
+                testY += dirY;//
             }
 
             return hasPassedOppositeColor;
