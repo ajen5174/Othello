@@ -25,6 +25,11 @@ namespace Othello.Models
             }
         }
 
+        public bool IsInBoundaries(int x, int y, int xBound, int yBound)
+        {
+            return (x >= 0 && x < xBound && y >= 0 && y < yBound);
+        }
+
 
         /// <summary>
         /// 
@@ -41,7 +46,7 @@ namespace Othello.Models
             Stone initialNeighbor;
             int testX = s.x + dirX;
             int testY = s.y + dirY;
-            if (testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge before looping, then we know this direction won't make the space valid
+            if (!IsInBoundaries(testX, testY, Spaces.GetLength(0), Spaces.GetLength(1)))//testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge before looping, then we know this direction won't make the space valid
             {
                 return false;
             }
@@ -58,7 +63,7 @@ namespace Othello.Models
                 return false;
             }
             //also need to add a check for swapping after hitting the edge of the board.
-            while (testX >= 0 && testX < Spaces.GetLength(0) && testY >= 0 && testY < Spaces.GetLength(1))
+            while (IsInBoundaries(testX, testY, Spaces.GetLength(0), Spaces.GetLength(1)))//testX >= 0 && testX < Spaces.GetLength(0) && testY >= 0 && testY < Spaces.GetLength(1))
             {
                 
                 neighbor = Spaces[testX, testY];
@@ -66,7 +71,7 @@ namespace Othello.Models
                 testY += dirY;//
                 if(neighbor.IsActive)
                 {
-                    if (testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge, we check to see if the color has stayed the same
+                    if (!IsInBoundaries(testX, testY, Spaces.GetLength(0), Spaces.GetLength(1)))// testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge, we check to see if the color has stayed the same
                     {
                         if (neighbor.Color != colorToPlace)//if the color is still opposite, then this is valid
                         {
@@ -112,6 +117,10 @@ namespace Othello.Models
                 neighbor.Flip();
                 x += dirX;
                 y += dirY;
+                if (!IsInBoundaries(x, y, Spaces.GetLength(0), Spaces.GetLength(1)))
+                {
+                    break;
+                }
                 neighbor = Spaces[x, y];
             }
 
@@ -181,7 +190,7 @@ namespace Othello.Models
                     if (!s.IsActive)//test for if it's active or not
                     {
                         //if any of the neighbors are the opposite color, then we can place there
-                        if(CheckStoneIsValid(s, i, j, color))
+                        if(CheckStoneIsValid(s, color))
                         {
                             list.Add(s);
                         }
