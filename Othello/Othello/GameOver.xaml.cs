@@ -26,5 +26,15 @@ namespace Othello
         {
             this.InitializeComponent();
         }
+
+        private void AgainButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage));
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Exit();
+        }
     }
 }
