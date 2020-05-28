@@ -140,6 +140,7 @@
   <ItemGroup>
     <Content Include="Assets\box.png" />
     <Content Include="Assets\circle.png" />
+    <Content Include="Assets\circleBlack.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

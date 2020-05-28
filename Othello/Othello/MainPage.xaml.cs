@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Playback;
 using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 
@@ -76,10 +78,20 @@ namespace Othello
                         bool color = stonesBoard.Spaces[i, j].Color;
 
                         if (color == true)
-                            GetSpace(PlayBoard, i, j).Fill = new SolidColorBrush(Colors.White);
-                        if (color == false)
-                            GetSpace(PlayBoard, i, j).Fill = new SolidColorBrush(Colors.Black);
+                        {
+                            GetSpace(PlayBoard, i, j).Fill = new ImageBrush()
+                            {
+                                ImageSource = new BitmapImage(new Uri("ms-appx:///Assets/circle.png"))
+                            };
+                        }
 
+                        if (color == false)
+                        {
+                            GetSpace(PlayBoard, i, j).Fill = new ImageBrush()
+                            {
+                                ImageSource = new BitmapImage(new Uri("ms-appx:///Assets/circleBlack.png"))
+                            };
+                        }
                     }
                 }
             }
@@ -117,17 +129,18 @@ namespace Othello
                 PlayBoard.ColumnDefinitions.Add(cd);
             }
 
+            PlayBoard.Background = new SolidColorBrush(Colors.DarkGreen);
 
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
                     Rectangle rect = new Rectangle();
+                    
                     rect.HorizontalAlignment = HorizontalAlignment.Stretch;
                     rect.VerticalAlignment = VerticalAlignment.Stretch;
 
                     rect.Stroke = new SolidColorBrush(Colors.SteelBlue);
-                    rect.Fill = new SolidColorBrush(Colors.DarkGreen);
                     rect.Tapped += Space_Click;
 
                     Grid.SetRow(rect, i);
