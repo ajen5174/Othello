@@ -63,7 +63,7 @@ namespace Othello
             Rectangle r = e.OriginalSource as Rectangle;
             int column = Grid.GetColumn(r);
             int row = Grid.GetRow(r);
-            if(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[column, row], playerTurn, true))
+            if(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[column, row], playerTurn, playerTurn))
                 playerTurn = !playerTurn;
             UpdateBoard();
         }
@@ -152,6 +152,7 @@ namespace Othello
                     rect.VerticalAlignment = VerticalAlignment.Stretch;
 
                     rect.Stroke = new SolidColorBrush(Colors.SteelBlue);
+                    rect.Fill = new SolidColorBrush(Colors.DarkGreen);
                     rect.Tapped += Space_Click;
 
                     Grid.SetRow(rect, i);
