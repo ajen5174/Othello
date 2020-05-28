@@ -25,6 +25,7 @@
         <!-- Command Bar -->
         <CommandBar DefaultLabelPosition="Right" Grid.Row="0" Grid.ColumnSpan="4">
             <AppBarButton x:Name="NewGameBtn" Icon="Add" Label="New Game" Click="NewGameBtn_Click"/>
+            <AppBarButton x:Name="ExitBtn" Icon="Cancel" Label="Exit" Foreground="Red" Click="ExitBtn_Click"/>
         </CommandBar>
 
         <!--Horizontal Numbers-->

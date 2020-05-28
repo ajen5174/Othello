@@ -139,5 +139,10 @@ namespace Othello
 
             return true;
         }
+
+        private void ExitBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Exit();
+        }
     }
 }
