@@ -29,6 +29,7 @@ namespace Othello
     {
         Board stonesBoard;
         Stone[] validSpaces;
+        bool playerTurn = true;//white = true; black = false
         public MainPage()
         {
             this.InitializeComponent();
@@ -60,7 +61,8 @@ namespace Othello
             Rectangle r = e.OriginalSource as Rectangle;
             int column = Grid.GetColumn(r);
             int row = Grid.GetRow(r);
-            Debug.WriteLine(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[column, row], column, row, true));
+            Debug.WriteLine(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[column, row], column, row, playerTurn));
+            playerTurn = !playerTurn;
         }
 
         public void UpdateBoard()
@@ -82,6 +84,8 @@ namespace Othello
                 }
             }
         }
+
+       
 
         Rectangle GetSpace(Grid g, int c, int r) //Helper method to access a grid's children using columns and rows
         {

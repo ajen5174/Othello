@@ -148,5 +148,31 @@ namespace Othello.Models
         {
             return ValidSpaces(true).Length + ValidSpaces(false).Length;//gonna be wrong
         }
+
+        public bool WinCondition()
+        {
+            int whiteCount = 0;
+            int blackCount = 0;
+            bool colorWinner;
+
+            for (int i = 0; i < Spaces.GetLength(0); i++)
+            {
+                for (int j = 0; j < Spaces.GetLength(1); j++)
+                {
+                    if (Spaces[i,j].Color == false)
+                    {
+                        blackCount++;
+                    }
+                    else
+                    {
+                        whiteCount++;
+                    }
+                }
+            }
+
+            colorWinner = whiteCount > blackCount;//true = white wins; false = black wins
+
+            return colorWinner;
+        }
     }
 }
