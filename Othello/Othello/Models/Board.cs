@@ -25,6 +25,11 @@ namespace Othello.Models
             }
         }
 
+        public bool IsInBoundaries(int x, int y, int xBound, int yBound)
+        {
+            return (x >= 0 && x < xBound && y >= 0 && y < yBound);
+        }
+
 
         /// <summary>
         /// 
@@ -35,13 +40,13 @@ namespace Othello.Models
         /// <param name="dirX">represents the x-direction to test</param>
         /// <param name="dirY">represents the y-direction to test</param>
         /// <returns></returns>
-        private bool CheckNeighborInDirection(Stone s, int x, int y, int dirX, int dirY, bool colorToPlace) 
+        private bool CheckNeighborInDirection(Stone s, int dirX, int dirY, bool colorToPlace) 
         {
             Stone neighbor;// = Spaces[dirX, dirY];
             Stone initialNeighbor;
-            int testX = x + dirX;
-            int testY = y + dirY;
-            if (testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge before looping, then we know this direction won't make the space valid
+            int testX = s.x + dirX;
+            int testY = s.y + dirY;
+            if (!IsInBoundaries(testX, testY, Spaces.GetLength(0), Spaces.GetLength(1)))//testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge before looping, then we know this direction won't make the space valid
             {
                 return false;
             }
@@ -58,7 +63,7 @@ namespace Othello.Models
                 return false;
             }
             //also need to add a check for swapping after hitting the edge of the board.
-            while (testX >= 0 && testX < Spaces.GetLength(0) && testY >= 0 && testY < Spaces.GetLength(1))
+            while (IsInBoundaries(testX, testY, Spaces.GetLength(0), Spaces.GetLength(1)))//testX >= 0 && testX < Spaces.GetLength(0) && testY >= 0 && testY < Spaces.GetLength(1))
             {
                 
                 neighbor = Spaces[testX, testY];
@@ -66,7 +71,7 @@ namespace Othello.Models
                 testY += dirY;//
                 if(neighbor.IsActive)
                 {
-                    if (testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge, we check to see if the color has stayed the same
+                    if (!IsInBoundaries(testX, testY, Spaces.GetLength(0), Spaces.GetLength(1)))// testX < 0 || testX >= Spaces.GetLength(0) || testY < 0 || testY >= Spaces.GetLength(1))//if we have hit an edge, we check to see if the color has stayed the same
                     {
                         if (neighbor.Color != colorToPlace)//if the color is still opposite, then this is valid
                         {
@@ -99,21 +104,74 @@ namespace Othello.Models
 
         }
 
-        public bool CheckStoneIsValid(Stone s, int x, int y, bool color)
+
+        public void FlipDirection(Stone clicked, int dirX, int dirY)
+        {
+            int x = clicked.x + dirX;
+            int y = clicked.y + dirY;
+            bool color = clicked.Color;
+
+            Stone neighbor = Spaces[x, y];
+            while (neighbor.Color != color)
+            {
+                neighbor.Flip();
+                x += dirX;
+                y += dirY;
+                if (!IsInBoundaries(x, y, Spaces.GetLength(0), Spaces.GetLength(1)))
+                {
+                    break;
+                }
+                neighbor = Spaces[x, y];
+            }
+
+        }
+
+        public bool CheckStoneIsValid(Stone s, bool color, bool shouldWeFlip = false)
         {
             //the idea behind this method is to take the initial space to be tested and call CheckNeighborsInDirection 8 times from that point
+            if(shouldWeFlip)
+            {
+                bool flip;
+                bool flipped = false;
+                for(int i = -1; i <= 1; i++)
+                {
+                    for(int j = -1; j <= 1; j++)
+                    {
+                        if(i == 0 && j == 0)
+                        {
+                            continue;
+                        }
+                        flip = CheckNeighborInDirection(s, i, j, color);
+                        if(flip)
+                        {
+                            flipped = true;
+                            s.IsActive = true;
+                            if (s.Color != color)
+                                s.Flip();
+                            FlipDirection(s, i, j);
+                        }
+                    }
+                }
 
-            return
-            CheckNeighborInDirection(s, x, y, 1, 0, color) || //right
-            CheckNeighborInDirection(s, x, y, 1, 1, color) || //bottom right
-            CheckNeighborInDirection(s, x, y, 1, -1, color) || //top right
+                return flipped;
+            }
+            else
+            {
+                return
+                CheckNeighborInDirection(s, 1, 0, color) || //right
+                CheckNeighborInDirection(s, 1, 1, color) || //bottom right
+                CheckNeighborInDirection(s, 1, -1, color) || //top right
 
-            CheckNeighborInDirection(s, x, y, 0, 1, color) || //up
-            CheckNeighborInDirection(s, x, y, 0, -1, color) || //down
+                CheckNeighborInDirection(s, 0, 1, color) || //up
+                CheckNeighborInDirection(s, 0, -1, color) || //down
 
-            CheckNeighborInDirection(s, x, y, -1, 0, color) || //left
-            CheckNeighborInDirection(s, x, y, -1, 1, color) || //bottom left
-            CheckNeighborInDirection(s, x, y, -1, -1, color);//top left
+                CheckNeighborInDirection(s, -1, 0, color) || //left
+                CheckNeighborInDirection(s, -1, 1, color) || //bottom left
+                CheckNeighborInDirection(s, -1, -1, color);//top left
+            }
+            
+            
+            
 
 
 
@@ -132,7 +190,7 @@ namespace Othello.Models
                     if (!s.IsActive)//test for if it's active or not
                     {
                         //if any of the neighbors are the opposite color, then we can place there
-                        if(CheckStoneIsValid(s, i, j, color))
+                        if(CheckStoneIsValid(s, color))
                         {
                             list.Add(s);
                         }

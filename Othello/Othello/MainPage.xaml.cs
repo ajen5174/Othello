@@ -63,8 +63,9 @@ namespace Othello
             Rectangle r = e.OriginalSource as Rectangle;
             int column = Grid.GetColumn(r);
             int row = Grid.GetRow(r);
-            Debug.WriteLine(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[column, row], column, row, playerTurn));
-            playerTurn = !playerTurn;
+            if(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[column, row], playerTurn, true))
+                playerTurn = !playerTurn;
+            UpdateBoard();
         }
 
         public void UpdateBoard()
