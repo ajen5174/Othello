@@ -70,6 +70,16 @@ namespace Othello
 
         public void UpdateBoard()
         {
+            //Update turn display
+            if (playerTurn == true) //white
+            {
+                TurnText.Text = "TURN: WHITE";
+            }
+            else
+            {
+                TurnText.Text = "TURN: BLACK";
+            }
+
             for (int i = 0; i < stonesBoard.Spaces.GetLength(0); i++)
             {
                 for (int j = 0; j < stonesBoard.Spaces.GetLength(1); j++)
