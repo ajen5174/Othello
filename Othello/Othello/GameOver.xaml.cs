@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Othello.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,8 @@ namespace Othello
         public GameOver()
         {
             this.InitializeComponent();
+
+            
         }
 
         private void AgainButton_Click(object sender, RoutedEventArgs e)
@@ -36,5 +39,22 @@ namespace Othello
         {
             Application.Current.Exit();
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            var board = (Board)e.Parameter;
+            
+
+            if (board.WinCondition())
+            {
+                WinnerText.Text = "White wins!";
+            }
+            else
+            {
+                WinnerText.Text = "Black wins!";
+            }
+        }
+
     }
 }
