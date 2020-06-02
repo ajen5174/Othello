@@ -4,6 +4,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting.AppContainer;
 using Othello;
 using Othello.Models;
+using Windows.Foundation;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Shapes;
 
 namespace OthelloTesting
 {
@@ -26,13 +30,46 @@ namespace OthelloTesting
     [TestClass]
     public class BoardTest
     {
+        #region Eric Tests
         [UITestMethod]
-        public void ReturnGrid()
+        public void CanReturnTheGrid()
         {
             MainPage mp = new MainPage();
             Assert.IsTrue(mp.CreateBoard());
         }
-        
+
+        [UITestMethod]
+        public void CanGetRectanglesFromAGrid()
+        {
+            Grid grid = new Grid();
+            grid.RowDefinitions.Add(new RowDefinition());
+            grid.RowDefinitions.Add(new RowDefinition());
+            grid.RowDefinitions.Add(new RowDefinition());
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            Rectangle rect = new Rectangle();
+            Grid.SetRow(rect, 0);
+            Grid.SetColumn(rect, 0);
+            grid.Children.Add(rect);
+
+            MainPage mp = new MainPage();
+            Assert.IsInstanceOfType(mp.GetSpace(grid, 0, 0), typeof(Rectangle));
+        }
+
+        [TestMethod]
+        public void GetBlackPieceCountReturns1()
+        {
+            Board board = new Board();
+            Stone black = new Stone();
+            black.IsActive = true;
+            board.Spaces[0, 0] = black;
+
+            Assert.IsTrue(board.GetBlackPieces() == 1);
+        }
+        #endregion
+
         [UITestMethod]
         public void GetValidSpaces()
         {

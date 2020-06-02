@@ -145,7 +145,7 @@ namespace Othello
 
        
 
-        Rectangle GetSpace(Grid g, int c, int r) //Helper method to access a grid's children using columns and rows
+        public Rectangle GetSpace(Grid g, int c, int r) //Helper method to access a grid's children using columns and rows
         {
             for (int i = 0; i < g.Children.Count; i++)
             {
