@@ -29,7 +29,7 @@ namespace Othello
     /// </summary>
     public partial class MainPage : Page
     {
-        Board stonesBoard;
+        public Board stonesBoard;
         Stone[] validSpaces;
         bool playerTurn = true;//white = true; black = false
         public MainPage()

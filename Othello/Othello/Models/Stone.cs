@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Othello.Models
 {
-    class Stone
+    public class Stone
     {
 		public bool IsActive { get; set; }
 		private bool color = false;//false = black

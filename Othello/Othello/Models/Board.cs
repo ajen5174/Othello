@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace Othello.Models
 {
-    class Board
+    public class Board
     {
         public Stone[,] Spaces { get; set; }
 
