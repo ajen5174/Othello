@@ -76,13 +76,14 @@ namespace Othello
             {
                 playerTurn = !playerTurn;
                 placeSound.Play();
+                UpdateBoard();
             }
             validSpaces = stonesBoard.ValidSpaces(playerTurn);
             if (validSpaces.Length <= 0)
             {
                 Frame.Navigate(typeof(GameOver));
             }
-            UpdateBoard();
+            
         }
 
         public void UpdateBoard()
