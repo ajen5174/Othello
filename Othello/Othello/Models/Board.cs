@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace Othello.Models
 {
-    class Board
+    public class Board
     {
         public Stone[,] Spaces { get; set; }
 
@@ -125,6 +125,10 @@ namespace Othello.Models
 
         public bool CheckStoneIsValid(Stone s, bool color, bool shouldWeFlip = false)
         {
+            if(s.IsActive)
+            {
+                return false;
+            }
             //the idea behind this method is to take the initial space to be tested and call CheckNeighborsInDirection 8 times from that point
             if(shouldWeFlip)
             {
@@ -231,6 +235,42 @@ namespace Othello.Models
             colorWinner = whiteCount > blackCount;//true = white wins; false = black wins
 
             return colorWinner;
+        }
+
+        public int GetBlackPieces()
+        {
+            int count = 0;
+
+            for (int i = 0; i < Spaces.GetLength(0); i++)
+            {
+                for (int j = 0; j < Spaces.GetLength(1); j++)
+                {
+                    if (Spaces[i, j].Color == false && Spaces[i, j].IsActive == true)
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+        }
+
+        public int GetWhitePieces()
+        {
+            int count = 0;
+
+            for (int i = 0; i < Spaces.GetLength(0); i++)
+            {
+                for (int j = 0; j < Spaces.GetLength(1); j++)
+                {
+                    if (Spaces[i, j].Color == true && Spaces[i, j].IsActive == true)
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
         }
     }
 }

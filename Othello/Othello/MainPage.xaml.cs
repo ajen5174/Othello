@@ -29,17 +29,26 @@ namespace Othello
     /// </summary>
     public partial class MainPage : Page
     {
-        Board stonesBoard;
+        public Board stonesBoard;
         Stone[] validSpaces;
         bool playerTurn = true;//white = true; black = false
+        MediaElement placeSound = null;
         public MainPage()
         {
             this.InitializeComponent();
             
         }
 
-        private void NewGameBtn_Click(object sender, RoutedEventArgs e)
+        private async void NewGameBtn_Click(object sender, RoutedEventArgs e)
         {
+            //initializeSound
+            placeSound = new MediaElement();
+            placeSound.AutoPlay = false;
+            var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Sound");
+            var file = await folder.GetFileAsync("PlaceStone.mp3");
+            var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+            placeSound.SetSource(stream, "");
+
             //User clicked on the new game button
             stonesBoard = new Board();
             stonesBoard.Spaces[3, 3].IsActive = true;
@@ -64,13 +73,17 @@ namespace Othello
             int column = Grid.GetColumn(r);
             int row = Grid.GetRow(r);
             if(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[column, row], playerTurn, true))
+            {
                 playerTurn = !playerTurn;
+                placeSound.Play();
+                UpdateBoard();
+            }
             validSpaces = stonesBoard.ValidSpaces(playerTurn);
             if (validSpaces.Length <= 0)
             {
                 Frame.Navigate(typeof(GameOver), stonesBoard);
             }
-            UpdateBoard();
+            
         }
 
         public void UpdateBoard()
@@ -109,8 +122,25 @@ namespace Othello
                             };
                         }
                     }
+                    else
+                    {
+                        if(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[i, j], playerTurn))
+                        {
+                            GetSpace(PlayBoard, i, j).Fill = new SolidColorBrush(Colors.Orange);
+
+                        }
+                        else
+                        {
+                            GetSpace(PlayBoard, i, j).Fill = new SolidColorBrush(Colors.DarkGreen);
+
+                        }
+                    }
                 }
             }
+
+            //Update pieces count
+            WhitePieces.Text = "" + stonesBoard.GetWhitePieces();
+            BlackPieces.Text = "" + stonesBoard.GetBlackPieces();
         }
 
        
