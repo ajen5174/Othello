@@ -109,6 +109,19 @@ namespace Othello
                             };
                         }
                     }
+                    else
+                    {
+                        if(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[i, j], playerTurn))
+                        {
+                            GetSpace(PlayBoard, i, j).Fill = new SolidColorBrush(Colors.Orange);
+
+                        }
+                        else
+                        {
+                            GetSpace(PlayBoard, i, j).Fill = new SolidColorBrush(Colors.DarkGreen);
+
+                        }
+                    }
                 }
             }
         }

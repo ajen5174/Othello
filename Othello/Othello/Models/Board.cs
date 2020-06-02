@@ -125,6 +125,10 @@ namespace Othello.Models
 
         public bool CheckStoneIsValid(Stone s, bool color, bool shouldWeFlip = false)
         {
+            if(s.IsActive)
+            {
+                return false;
+            }
             //the idea behind this method is to take the initial space to be tested and call CheckNeighborsInDirection 8 times from that point
             if(shouldWeFlip)
             {
