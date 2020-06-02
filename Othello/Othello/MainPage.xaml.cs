@@ -81,7 +81,7 @@ namespace Othello
             validSpaces = stonesBoard.ValidSpaces(playerTurn);
             if (validSpaces.Length <= 0)
             {
-                Frame.Navigate(typeof(GameOver));
+                Frame.Navigate(typeof(GameOver), stonesBoard);
             }
             
         }

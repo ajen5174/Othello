@@ -218,13 +218,16 @@ namespace Othello.Models
             {
                 for (int j = 0; j < Spaces.GetLength(1); j++)
                 {
-                    if (Spaces[i,j].Color == false)
+                    if (Spaces[i,j].IsActive)
                     {
-                        blackCount++;
-                    }
-                    else
-                    {
-                        whiteCount++;
+                        if (Spaces[i,j].Color == false)
+                        {
+                            blackCount++;
+                        }
+                        else
+                        {
+                            whiteCount++;
+                        }
                     }
                 }
             }
