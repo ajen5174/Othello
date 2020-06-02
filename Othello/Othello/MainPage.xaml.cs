@@ -136,6 +136,10 @@ namespace Othello
                     }
                 }
             }
+
+            //Update pieces count
+            WhitePieces.Text = "" + stonesBoard.GetWhitePieces();
+            BlackPieces.Text = "" + stonesBoard.GetBlackPieces();
         }
 
        

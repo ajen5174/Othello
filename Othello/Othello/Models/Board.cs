@@ -233,5 +233,41 @@ namespace Othello.Models
 
             return colorWinner;
         }
+
+        public int GetBlackPieces()
+        {
+            int count = 0;
+
+            for (int i = 0; i < Spaces.GetLength(0); i++)
+            {
+                for (int j = 0; j < Spaces.GetLength(1); j++)
+                {
+                    if (Spaces[i, j].Color == false && Spaces[i, j].IsActive == true)
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+        }
+
+        public int GetWhitePieces()
+        {
+            int count = 0;
+
+            for (int i = 0; i < Spaces.GetLength(0); i++)
+            {
+                for (int j = 0; j < Spaces.GetLength(1); j++)
+                {
+                    if (Spaces[i, j].Color == true && Spaces[i, j].IsActive == true)
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+        }
     }
 }
