@@ -29,7 +29,7 @@ namespace Othello
     /// </summary>
     public partial class MainPage : Page
     {
-        Board stonesBoard;
+        public Board stonesBoard;
         Stone[] validSpaces;
         bool playerTurn = true;//white = true; black = false
         public MainPage()
@@ -107,6 +107,19 @@ namespace Othello
                             {
                                 ImageSource = new BitmapImage(new Uri("ms-appx:///Assets/circleBlack.png"))
                             };
+                        }
+                    }
+                    else
+                    {
+                        if(stonesBoard.CheckStoneIsValid(stonesBoard.Spaces[i, j], playerTurn))
+                        {
+                            GetSpace(PlayBoard, i, j).Fill = new SolidColorBrush(Colors.Orange);
+
+                        }
+                        else
+                        {
+                            GetSpace(PlayBoard, i, j).Fill = new SolidColorBrush(Colors.DarkGreen);
+
                         }
                     }
                 }
