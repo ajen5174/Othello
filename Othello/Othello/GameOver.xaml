@@ -21,13 +21,13 @@
         </Grid.ColumnDefinitions>
 
         <!--Title-->
-        <TextBlock Text="GAME OVER!" TextAlignment="Center" VerticalAlignment="Center" CharacterSpacing="100" Foreground="Red" FontSize="72" Grid.Column="1"/>
+        <TextBlock Text="GAME OVER!" TextAlignment="Center" VerticalAlignment="Center" CharacterSpacing="100" Foreground="Red" FontSize="60" Grid.Column="1"/>
 
         <!--Winner Text Block-->
         <TextBlock x:Name="WinnerText" Text="THIS IS WHO WON" TextAlignment="Center" FontSize="44" Margin="25" Grid.Column="1" Grid.Row="1"/>
 
         <!--Buttons-->
-        <Button x:Name="AgainButton" Content="NEW GAME" FontSize="64" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50" Grid.Column="1" Grid.Row="1" Width="400" Click="AgainButton_Click"/>
-        <Button x:Name="ExitButton" Content="EXIT" FontSize="64" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="50" Grid.Column="1" Grid.Row="2" Width="400"  Click="ExitButton_Click"/>
+        <Button x:Name="AgainButton" Content="NEW GAME" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50" Grid.Column="1" Grid.Row="1" Width="400" Click="AgainButton_Click"/>
+        <Button x:Name="ExitButton" Content="EXIT" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="50" Grid.Column="1" Grid.Row="2" Width="400"  Click="ExitButton_Click"/>
     </Grid>
 </Page>
